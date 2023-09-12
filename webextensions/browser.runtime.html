@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<title>Test browser.runtime</title>
+<meta name="extension" content="resources/runtime">
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<script>
+  const asyncTests = {};
+
+  window.addEventListener("message", async ({data}) => {
+    if (data.WPTTestResults) {
+      const {name} = data
+
+      if (data.isAsyncTest) {
+        if (data.asyncResult !== undefined) {
+          const t = asyncTests[name]
+          t.step(() => {
+            assert_true(data.asyncResult, name);
+          })
+          t.done();
+        } else {
+          asyncTests[name] = async_test(name);
+        }
+      } else {
+        test(() => {
+          assert_true(data.result, name)
+        }, /* TODO better titles */ name.replace('Exists', ' Exists'))
+      }
+    }
+  })
+</script>
+<iframe id="testIframe"></iframe>

@@ -447,6 +447,13 @@ class SourceFile:
         return self.root.findall(".//{http://www.w3.org/1999/xhtml}meta[@name='pac']")
 
     @cached_property
+    def extension_nodes(self) -> List[ElementTree.Element]:
+        """List of ElementTree Elements corresponding to nodes in a test that
+        specify a WebExtension"""
+        assert self.root is not None
+        return self.root.findall(".//{http://www.w3.org/1999/xhtml}meta[@name='extension']")
+
+    @cached_property
     def script_metadata(self) -> Optional[List[Tuple[Text, Text]]]:
         if self.name_is_worker or self.name_is_multi_global or self.name_is_window:
             regexp = js_meta_re
@@ -473,6 +480,22 @@ class SourceFile:
             timeout_str: Optional[Text] = self.timeout_nodes[0].attrib.get("content", None)
             if timeout_str and timeout_str.lower() == "long":
                 return "long"
+
+        return None
+
+    @cached_property
+    def extension(self) -> Optional[Text]:
+        """The path to a directory containing a WebExtension. A filepath or null"""
+        if self.script_metadata:
+            for (meta, content) in self.script_metadata:
+                if meta == 'extension':
+                    return content
+
+        if self.root is None:
+            return None
+
+        if self.extension_nodes:
+            return self.extension_nodes[0].attrib.get("content", None)
 
         return None
 
@@ -965,6 +988,7 @@ class SourceFile:
                     global_variant_url(self.rel_url, suffix) + variant,
                     timeout=self.timeout,
                     pac=self.pac,
+                    extension=self.extension,
                     jsshell=jsshell,
                     script_metadata=self.script_metadata
                 )
@@ -983,6 +1007,7 @@ class SourceFile:
                     test_url + variant,
                     timeout=self.timeout,
                     pac=self.pac,
+                    extension=self.extension,
                     script_metadata=self.script_metadata
                 )
                 for variant in self.test_variants
@@ -999,6 +1024,7 @@ class SourceFile:
                     test_url + variant,
                     timeout=self.timeout,
                     pac=self.pac,
+                    extension=self.extension,
                     script_metadata=self.script_metadata
                 )
                 for variant in self.test_variants
@@ -1026,6 +1052,7 @@ class SourceFile:
                     url,
                     timeout=self.timeout,
                     pac=self.pac,
+                    extension=self.extension,
                     testdriver=testdriver,
                     script_metadata=self.script_metadata
                 ))
