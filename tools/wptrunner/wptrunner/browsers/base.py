@@ -165,6 +165,9 @@ class Browser:
     def pac(self) -> Optional[str]:
         return None
 
+    @property
+    def extension(self):
+        return None
 
 class NullBrowser(Browser):
     def __init__(self, logger: StructuredLogger, **kwargs: Any):
@@ -294,6 +297,7 @@ class OutputHandler:
 class WebDriverBrowser(Browser):
     __metaclass__ = ABCMeta
 
+<<<<<<< HEAD
     def __init__(self,
                  logger: StructuredLogger,
                  binary: Optional[str] = None,
@@ -305,6 +309,11 @@ class WebDriverBrowser(Browser):
                  env: Optional[Mapping[str, str]] = None,
                  supports_pac: bool = True,
                  **kwargs: Any):
+=======
+    def __init__(self, logger, binary=None, webdriver_binary=None,
+                 webdriver_args=None, host="127.0.0.1", port=None, base_path="/",
+                 env=None, supports_extension=True, supports_pac=True, **kwargs):
+>>>>>>> 5ef608ee6c (add basic tests for browser.runtime.*)
         super().__init__(logger)
 
         if webdriver_binary is None:
@@ -318,6 +327,7 @@ class WebDriverBrowser(Browser):
         self.host = host
         self._port = port
         self._supports_pac = supports_pac
+        self._supports_extension = supports_extension
 
         self.base_path = base_path
         self.env = os.environ.copy() if env is None else env
@@ -328,6 +338,7 @@ class WebDriverBrowser(Browser):
         self._cmd = None
         self._proc: Optional[mozprocess.ProcessHandler] = None
         self._pac = None
+        self._extension = None
 
     def make_command(self) -> List[str]:
         """Returns the full command for starting the server process as a list."""
@@ -432,13 +443,19 @@ class WebDriverBrowser(Browser):
         return ExecutorBrowser, {"webdriver_url": self.url,
                                  "host": self.host,
                                  "port": self.port,
+                                 "extension": self.extension,
                                  "pac": self.pac,
                                  "env": self.env}
 
     def settings(self, test: Test) -> BrowserSettings:
         self._pac = test.environment.get("pac", None) if self._supports_pac else None
-        return {"pac": self._pac}
+        self._extension = test.environment.get("extension", None) if self._supports_extension else None
+        return {"pac": self._pac, "extension": self._extension}
 
     @property
     def pac(self) -> Optional[str]:
         return self._pac
+
+    @property
+    def extension(self):
+        return self._extension

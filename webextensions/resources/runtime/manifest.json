@@ -1,0 +1,60 @@
+{
+  "name": "Web Platform Tests - browser.runtime tests",
+  "update_url": "https://web-platform.test/webext-update",
+  "version": "0.1",
+  "manifest_version": 3,
+  "description": "tests for browser.runtime",
+  "key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn66WVlu1q79uL+GoukV4PnXqYJrIi53gk5/yVUVg8IYO35Lg0ZXvSO0PpGEZSZDRCejBZBxswdulUM/kIyw6f1RVt/7E6SP7zfK6C/Vl8j1Z0LrmVDlU9J02LLW/6BW9qvqE9u76+rwPQMCj0LHrCvD5CShPX6fMar2MOSmmFq7ezr2hMPTr38ECS/vDpI3Wz7qct7GSvgmr8vGFOL1fiub7jWr69qgCOLRPO4XNK7H6Cx2adBd1zQYOgz687RPimBJ88jMM9mchVOipWyjNGKlDie5lAa53iFT6F7eZ69N3+f7u3o/W4iqrwyQ1NSh2m9GKUEPPBKkYEJOPXRzGvQIDAQAB",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://web-platform.test/webextensions/browser.runtime.html"
+      ],
+      "js": [
+        "util.js",
+        "tests/prototype.js",
+        "tests/connect.js",
+        "tests/ContextType.js",
+        "tests/getBrowserInfo.js",
+        "tests/getFrameId.js",
+        "tests/getManifest.js",
+        "tests/getPlatformInfo.js",
+        "tests/getPackageDirectoryEntry.js",
+        "tests/getURL.js",
+        "tests/id.js"
+      ]
+    },{
+      "matches": [
+        "http://web-platform.test:8000/webextensions/browser.runtime.html"
+      ],
+      "js": [
+        "util.js",
+        "tests/prototype.js",
+        "tests/connect.js",
+        "tests/ContextType.js",
+        "tests/getBrowserInfo.js",
+        "tests/getFrameId.js",
+        "tests/getManifest.js",
+        "tests/getPlatformInfo.js",
+        "tests/getPackageDirectoryEntry.js",
+        "tests/getURL.js",
+        "tests/id.js"
+      ]
+    }
+  ],
+  "icons": {
+    "512": "icon.jpg"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [ "utility_page.html" ],
+      "matches": [
+        "http://web-platform.test/*"
+      ]
+    }
+  ],
+  "host_permissions": [
+    "http://web-platform.test/*"
+  ],
+  "nonStandardProp": "nonStandardValue"
+}

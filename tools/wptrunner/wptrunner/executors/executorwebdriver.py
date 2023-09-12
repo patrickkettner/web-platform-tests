@@ -630,6 +630,14 @@ class WebDriverProtocol(Protocol):
                 }
             })
 
+        extension = browser.extension
+        if extension is not None:
+            merge_dicts(self.capabilities, {"goog:chromeOptions":
+                {
+                    "args": [f"--load-extension={extension}"]
+                }
+            })
+
         self.url = browser.webdriver_url
         self.webdriver = None
 

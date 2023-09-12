@@ -1,0 +1,1 @@
+emitTestResult(`WPTComplete`, true)
