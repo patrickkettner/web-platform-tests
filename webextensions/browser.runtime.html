@@ -6,7 +6,12 @@
 <script>
   const asyncTests = {};
 
+  // Test are executed by the extensions inside of their background script
+  // or in a content script. The results are sent back to the test runner
+  // via postMessage.
   window.addEventListener("message", async ({data}) => {
+    // WPTTestResults is a bool set on the test runner being run by
+    // the extension.
     if (data.WPTTestResults) {
       const {name} = data
 

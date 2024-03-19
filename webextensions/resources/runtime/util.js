@@ -24,24 +24,23 @@ function isForeground() {
   return 'window' in globalThis
 }
 
-function requestIframeTest() {
+function requestIframeTest(testName) {
+  console.log('requesting iframe test: ', testName)
   return new Promise((resolve, reject) => {
-    const iframe = document.querySelector('iframe');
-    if (!iframe.dataset.loaded) {
-      iframe.src = chrome.runtime.getURL('utility_page.html');
-      iframe.dataset.loaded = true;
-      iframe.onload = () => {
-        resolve(iframe);
-      };
-    } else {
-      return resolve(iframe);
+    const iframe = document.createElement('iframe');
+    iframe.id = testName.replace(/\s/g, '_');
+    iframe.src = chrome.runtime.getURL(`utility_page.html?${testName}`);
+    iframe.dataset.loaded = true;
+    iframe.onload = () => {
+      resolve(iframe);
     }
+    document.body.appendChild(iframe);
   })
 }
 
-function emitAsyncTest(name, result) {
-  const _thisTest = tests[name];
-  emitTestResult(name, null, true, result)
+function emitAsyncTest(testName, result) {
+  const _thisTest = tests[testName];
+  emitTestResult(testName, null, true, result)
 }
 
 let tests = {};
@@ -51,7 +50,6 @@ window.addEventListener("message", async (event) => {
   // we do not run the test until a signal is sent from outside the iframe to
   // inside of the iframe.
   if (insideIframe) {
-  console.log(`event - ${event.data} - ${location.href}`)
     const testName = event.data
     // if a lookup testName in our tests object, and then execute the
     // relevant test function.
@@ -65,7 +63,7 @@ window.addEventListener("message", async (event) => {
 
 async function asyncTests(_tests) {
   // for every test, we call emitAsyncTest with the test name this will start
-  // WPT's async_test, which won't completly // resolve until we call it again
+  // WPT's async_test, which won't completly resolve until we call it again
   // with the same test name and test result
   for (const _test in _tests) {
     if (!(_test in tests)) {
@@ -79,10 +77,11 @@ async function asyncTests(_tests) {
   }
   if (!insideIframe) {
     // ensure that the iframe where we will actually execute the test is loaded
-    const iframe = await requestIframeTest()
     // send a test name to the iframe via postMessage, which will trigger
     // that test to be run
+
     for (const _test in _tests) {
+      const iframe = await requestIframeTest(_test)
       iframe.contentWindow.postMessage(_test, '*')
     }
   }
