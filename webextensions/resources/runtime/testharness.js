@@ -1170,15 +1170,15 @@
      */
     function generate_tests(func, args, properties) {
         forEach(args, function(x, i)
-                {
-                    var name = x[0];
-                    test(function()
-                         {
-                             func.apply(this, x.slice(1));
-                         },
-                         name,
-                         Array.isArray(properties) ? properties[i] : properties);
-                });
+            {
+                var name = x[0];
+                test(function()
+                    {
+                        func.apply(this, x.slice(1));
+                    },
+                    name,
+                    Array.isArray(properties) ? properties[i] : properties);
+            });
     }
 
     /**

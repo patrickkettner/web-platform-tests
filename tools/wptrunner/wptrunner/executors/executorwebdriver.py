@@ -43,6 +43,7 @@ from .protocol import (BaseProtocolPart,
                        DevicePostureProtocolPart,
                        StorageProtocolPart,
                        VirtualPressureSourceProtocolPart,
+                       WebExtensionsPart,
                        merge_dicts)
 
 from typing import List, Optional, Tuple
@@ -567,7 +568,6 @@ class WebDriverStorageProtocolPart(StorageProtocolPart):
     def run_bounce_tracking_mitigations(self):
         return self.webdriver.send_session_command("DELETE", "storage/run_bounce_tracking_mitigations")
 
-
 class WebDriverVirtualPressureSourceProtocolPart(VirtualPressureSourceProtocolPart):
     def setup(self):
         self.webdriver = self.parent.webdriver
@@ -584,6 +584,13 @@ class WebDriverVirtualPressureSourceProtocolPart(VirtualPressureSourceProtocolPa
     def remove_virtual_pressure_source(self, source_type):
         return self.webdriver.send_session_command("DELETE", "pressuresource/%s" % source_type)
 
+class WebDriverWebExtensionsPart(WebExtensionsPart):
+    def setup(self):
+        self.webdriver = self.parent.webdriver
+
+    def install_unpacked_extension(self, extension_path):
+        body = {"path": extension_path}
+        return self.webdriver.send_session_command("POST", "extensions/loadunpacked", body)
 
 class WebDriverProtocol(Protocol):
     enable_bidi = False
@@ -609,6 +616,7 @@ class WebDriverProtocol(Protocol):
                   WebDriverDevicePostureProtocolPart,
                   WebDriverStorageProtocolPart,
                   WebDriverVirtualPressureSourceProtocolPart]
+                  WebDriverWebExtensionsPart]
 
     def __init__(self, executor, browser, capabilities, **kwargs):
         super().__init__(executor, browser)
@@ -634,7 +642,9 @@ class WebDriverProtocol(Protocol):
         if extension is not None:
             merge_dicts(self.capabilities, {"goog:chromeOptions":
                 {
-                    "args": [f"--load-extension={extension}"]
+                    "args": [
+                        f"--enable-unsafe-extension-debugging",
+                        f"--remote-debugging-pipe"]
                 }
             })
 

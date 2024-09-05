@@ -128,6 +128,14 @@ class ChromeDriverDevToolsProtocolPart(ProtocolPart):
                                                    f"{self.parent.vendor_prefix}/cdp/execute",
                                                    body=body)
 
+class ChromeDriverWebExtensionProtocolPart(WebDriverFedCMProtocolPart):
+    def setup(self):
+        self.webdriver = self.parent.webdriver
+
+    def load_unpacked_extension(self, path):
+        return self.webdriver.load_extension(path)
+
+
 
 class ChromeDriverProtocol(WebDriverProtocol):
     implements = [

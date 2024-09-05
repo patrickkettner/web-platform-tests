@@ -25,7 +25,6 @@ function isForeground() {
 }
 
 function requestIframeTest(testName) {
-  console.log('requesting iframe test: ', testName)
   return new Promise((resolve, reject) => {
     const iframe = document.createElement('iframe');
     iframe.id = testName.replace(/\s/g, '_');

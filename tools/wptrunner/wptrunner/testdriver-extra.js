@@ -242,6 +242,10 @@
         return create_context_action("delete_all_cookies", context, {});
     };
 
+    window.test_driver_internal.install_unpacked_extension = function(path=null) {
+        return create_context_action("install_unpacked_extension", {path});
+    };
+
     window.test_driver_internal.get_all_cookies = function(context=null) {
         return create_context_action("get_all_cookies", context, {});
     };

@@ -129,6 +129,10 @@ the global scope.
 
 ```eval_rst
 .. js:autofunction:: test_driver.run_bounce_tracking_mitigations
+
+### Web Extensions ###
+```eval_rst
+.. js:autofunction:: test_driver.install_unpacked_extension
 ```
 
 ### Compute Pressure ###

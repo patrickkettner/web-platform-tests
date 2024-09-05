@@ -954,4 +954,13 @@ class VirtualPressureSourceProtocolPart(ProtocolPart):
 
     @abstractmethod
     def remove_virtual_pressure_source(self, source_type):
+
+class WebExtensionsPart(ProtocolPart):
+    """Protocol part for WebExtensions"""
+    __metaclass__ = ABCMeta
+
+    name = "web_extensions"
+
+    @abstractmethod
+    def install_unpacked_extension(path):
         pass

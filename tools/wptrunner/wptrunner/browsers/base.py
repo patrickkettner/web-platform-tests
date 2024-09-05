@@ -297,7 +297,6 @@ class OutputHandler:
 class WebDriverBrowser(Browser):
     __metaclass__ = ABCMeta
 
-<<<<<<< HEAD
     def __init__(self,
                  logger: StructuredLogger,
                  binary: Optional[str] = None,
@@ -308,12 +307,9 @@ class WebDriverBrowser(Browser):
                  base_path: str = "/",
                  env: Optional[Mapping[str, str]] = None,
                  supports_pac: bool = True,
+                 supports_extension: bool = True,
                  **kwargs: Any):
-=======
-    def __init__(self, logger, binary=None, webdriver_binary=None,
-                 webdriver_args=None, host="127.0.0.1", port=None, base_path="/",
-                 env=None, supports_extension=True, supports_pac=True, **kwargs):
->>>>>>> 5ef608ee6c (add basic tests for browser.runtime.*)
+
         super().__init__(logger)
 
         if webdriver_binary is None:
