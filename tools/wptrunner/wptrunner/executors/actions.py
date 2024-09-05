@@ -10,6 +10,7 @@ class ClickAction:
     def __call__(self, payload):
         selector = payload["selector"]
         element = self.protocol.select.element_by_selector(selector)
+
         self.logger.debug("Clicking element: %s" % selector)
         self.protocol.click.element(element)
 
@@ -478,6 +479,9 @@ class RunBounceTrackingMitigationsAction:
 class CreateVirtualPressureSourceAction:
     name = "create_virtual_pressure_source"
 
+class InstallUnpackedExtensionAction:
+    name = "install_unpacked_extension"
+
     def __init__(self, logger, protocol):
         self.logger = logger
         self.protocol = protocol
@@ -510,6 +514,11 @@ class RemoveVirtualPressureSourceAction:
     def __call__(self, payload):
         source_type = payload["source_type"]
         return self.protocol.pressure.remove_virtual_pressure_source(source_type)
+=======
+        path = payload["path"]
+        self.protocol.web_extensions.install_unpacked_extension(path)
+
+>>>>>>> 78c223f366 (use the new chromedriver apis)
 
 actions = [ClickAction,
            DeleteAllCookiesAction,
@@ -548,6 +557,10 @@ actions = [ClickAction,
            SetDevicePostureAction,
            ClearDevicePostureAction,
            RunBounceTrackingMitigationsAction,
+<<<<<<< HEAD
            CreateVirtualPressureSourceAction,
            UpdateVirtualPressureSourceAction,
            RemoveVirtualPressureSourceAction]
+=======
+           InstallUnpackedExtensionAction]
+>>>>>>> 78c223f366 (use the new chromedriver apis)

@@ -46,6 +46,7 @@ from .protocol import (AccessibilityProtocolPart,
                        VirtualSensorProtocolPart,
                        DevicePostureProtocolPart,
                        VirtualPressureSourceProtocolPart,
+                       WebExtensionsPart,
                        merge_dicts)
 
 
@@ -701,6 +702,13 @@ class MarionetteVirtualSensorProtocolPart(VirtualSensorProtocolPart):
 
     def get_virtual_sensor_information(self, information_parameters):
         raise NotImplementedError("get_virtual_sensor_information not yet implemented")
+
+class MarionetteWebExtensionsPart(WebExtensionsPart):
+    def setup(self):
+        self.marionette = self.parent.marionette
+
+    def install_unpacked_extension(self, extension_path):
+        raise NotImplementedError("install_unpacked_extension not yet implemented")
 
 
 class MarionetteDevicePostureProtocolPart(DevicePostureProtocolPart):

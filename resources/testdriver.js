@@ -1143,6 +1143,7 @@
         },
 
         /**
+<<<<<<< HEAD
          * Creates a virtual pressure source.
          *
          * Matches the `Create virtual pressure source
@@ -1217,6 +1218,20 @@
         remove_virtual_pressure_source: function(source_type, context=null) {
             return window.test_driver_internal.remove_virtual_pressure_source(source_type, context);
         }
+
+         * Install an unpacked Web Extension
+         *
+         * Matches the behaviour of the `Extensions.loadUnpacked
+         * <https://chromedevtools.github.io/devtools-protocol/tot/Extensions/#method-loadUnpacked>`
+         * command.
+         *
+         * @param {String} path - Absolute file path to the Web Extension
+         *
+         * @returns {String} - The extensions ID
+         */
+        install_unpacked_extension: function(path=null) {
+          return window.test_driver_internal.install_unpacked_extension(path);
+        },
     };
 
     window.test_driver_internal = {
@@ -1444,5 +1459,9 @@
         async remove_virtual_pressure_source(source_type, context=null) {
             throw new Error("remove_virtual_pressure_source() is not implemented by testdriver-vendor.js");
         }
+
+        async install_unpacked_extension(path=null) {
+            throw new Error("install_unpacked_extension() is not implemented by testdriver-vendor.js");
+        },
     };
 })();
