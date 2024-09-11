@@ -236,6 +236,7 @@ class ChromeBrowser(WebDriverBrowser):
                 cmd_arg("port", str(port)),
                 # TODO(crbug.com/354135326): Remove --ignore-explicit-port after
                 # M132.
+                cmd_arg("remote-debugging-pipe"),
                 cmd_arg("ignore-explicit-port", None),
                 cmd_arg("url-base", self.base_path),
                 cmd_arg("enable-chrome-logs")] + self.webdriver_args
