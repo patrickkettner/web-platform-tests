@@ -16,6 +16,7 @@ from .executorwebdriver import (
     WebDriverCrashtestExecutor,
     WebDriverFedCMProtocolPart,
     WebDriverPrintRefTestExecutor,
+    WebDriverWebExtensionsPart,
     WebDriverProtocol,
     WebDriverRefTestExecutor,
     WebDriverTestharnessExecutor,
@@ -128,12 +129,16 @@ class ChromeDriverDevToolsProtocolPart(ProtocolPart):
                                                    f"{self.parent.vendor_prefix}/cdp/execute",
                                                    body=body)
 
-class ChromeDriverWebExtensionProtocolPart(WebDriverFedCMProtocolPart):
+class ChromeDriverWebExtensionsProtocolPart(WebDriverWebExtensionsPart):
     def setup(self):
         self.webdriver = self.parent.webdriver
 
-    def load_unpacked_extension(self, path):
-        return self.webdriver.load_extension(path)
+    def install_unpacked_extension(self, path):
+        try:
+            return self.parent.cdp.execute_cdp_command("Extensions.loadUnpacked", {"path": path})
+        except Exception as e:
+            print('Error installing extension')
+            print(e)
 
 
 
@@ -142,6 +147,7 @@ class ChromeDriverProtocol(WebDriverProtocol):
         ChromeDriverDevToolsProtocolPart,
         ChromeDriverFedCMProtocolPart,
         ChromeDriverTestharnessProtocolPart,
+        ChromeDriverWebExtensionsProtocolPart,
     ]
     for base_part in WebDriverProtocol.implements:
         if base_part.name not in {part.name for part in implements}:

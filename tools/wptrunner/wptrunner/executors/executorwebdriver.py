@@ -585,12 +585,8 @@ class WebDriverVirtualPressureSourceProtocolPart(VirtualPressureSourceProtocolPa
         return self.webdriver.send_session_command("DELETE", "pressuresource/%s" % source_type)
 
 class WebDriverWebExtensionsPart(WebExtensionsPart):
-    def setup(self):
-        self.webdriver = self.parent.webdriver
-
     def install_unpacked_extension(self, extension_path):
-        body = {"path": extension_path}
-        return self.webdriver.send_session_command("POST", "extensions/loadunpacked", body)
+        raise NotImplementedError()
 
 class WebDriverProtocol(Protocol):
     enable_bidi = False

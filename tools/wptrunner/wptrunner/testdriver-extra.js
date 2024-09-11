@@ -243,7 +243,7 @@
     };
 
     window.test_driver_internal.install_unpacked_extension = function(path=null) {
-        return create_context_action("install_unpacked_extension", {path});
+        return create_action("install_unpacked_extension", {path});
     };
 
     window.test_driver_internal.get_all_cookies = function(context=null) {
