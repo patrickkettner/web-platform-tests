@@ -514,11 +514,9 @@ class RemoveVirtualPressureSourceAction:
     def __call__(self, payload):
         source_type = payload["source_type"]
         return self.protocol.pressure.remove_virtual_pressure_source(source_type)
-=======
         path = payload["path"]
         self.protocol.web_extensions.install_unpacked_extension(path)
 
->>>>>>> 78c223f366 (use the new chromedriver apis)
 
 actions = [ClickAction,
            DeleteAllCookiesAction,
@@ -557,10 +555,7 @@ actions = [ClickAction,
            SetDevicePostureAction,
            ClearDevicePostureAction,
            RunBounceTrackingMitigationsAction,
-<<<<<<< HEAD
            CreateVirtualPressureSourceAction,
            UpdateVirtualPressureSourceAction,
-           RemoveVirtualPressureSourceAction]
-=======
+           RemoveVirtualPressureSourceAction,
            InstallUnpackedExtensionAction]
->>>>>>> 78c223f366 (use the new chromedriver apis)
